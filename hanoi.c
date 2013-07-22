@@ -20,8 +20,3 @@ int main(void)
 	hanoi(numDiscos, 'A', 'B', 'C');
 	return 0;
 }
-
-;	call hanoi n-1, a, c, b
-	add esp, 16
-;	call _print
-;	call hanoi n-1, c, b, a
