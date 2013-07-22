@@ -59,6 +59,8 @@ _print:
 
 
 _hanoi:
+	push ebp
+    mov  ebp, esp
 ;	compare with one
 	mov eax, dword[nDisk]
 	cmp eax, 49
@@ -68,15 +70,24 @@ _hanoi:
 ;	call hanoi n-1, a, c, b
 ;	call _print
 ;	call hanoi n-1, c, b, a
+	dec eax
+    push dword [ebp+12] ; stack for first recursive invocation
+    push dword [ebp+16]
+    push dword [ebp+20]
+    push dword eax
+	add esp, 16
 	jmp done
-
+	
 	equal:
 	call _print
 
 	done:
+	add esp, 16
 	ret
 
 _start:
+	push ebp
+    mov  ebp, esp
 ;	welcome message
 	mov eax, 4
 	mov ebx, 0
@@ -91,7 +102,13 @@ _start:
 	mov edx, 1
 	int 80h
 
-	call _hanoi
+	push dword 0x2
+	push dword 0x1
+	push dword 0x3
+	push dword eax
+	;call _hanoi
+	add esp, 16
+
 
 ;	exit
 	mov eax, 1
