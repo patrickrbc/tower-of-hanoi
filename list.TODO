@@ -1,7 +1,0 @@
-TODO:
-  ☐ concatenate strings
-  ☐ receive parameters
-  ☐ if else
-  Comparação: cmp operando1, operando2
-  Saltos: jmp endereço , je endereço, 
-  jz endereço, jnz endereço , jne endereço
