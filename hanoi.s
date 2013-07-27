@@ -41,7 +41,7 @@ _print:
 
 	mov eax, 4
 	mov ebx, 0
-	mov ecx, dword[esp+20] ;  A
+	mov ecx, dword[esp+24] ;  A
 	mov edx, 1
 	int 80h
 
@@ -54,7 +54,7 @@ _print:
 
 	mov eax, 4
 	mov ebx, 0
-	mov ecx, dword[esp+24] ;  B
+	mov ecx, dword[esp+20] ;  B
 	mov edx, 1
 	int 80h
 
@@ -73,9 +73,6 @@ _hanoi:
 
 	je equal
 ;	not equal
-;	call hanoi n-1, a, c, b
-;	call _print
-;	call hanoi n-1, c, b, a
     mov edx, [esp+8] ; N
 	dec edx
     mov eax, [esp+12] ; A
@@ -89,6 +86,17 @@ _hanoi:
 
     call _print
     jmp done
+
+    mov edx, [esp+8] ; N
+	dec edx
+    mov eax, [esp+12] ; A
+    mov ebx, [esp+16] ; B
+    mov ecx, [esp+20] ; C
+    push eax ; A
+    push ebx ; B
+    push ecx ; C
+    push edx ; n-1
+    call _hanoi
 
 	equal:
 	call _print
@@ -112,7 +120,7 @@ _start:
 	mov eax, 3
 	mov ebx, 0
 	mov ecx, nDisk
-	mov edx, 2
+	mov edx, 1
 	int 80h
 
 	push diskA
