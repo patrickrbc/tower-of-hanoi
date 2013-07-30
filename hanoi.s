@@ -40,7 +40,7 @@ _hanoi:
 
     push dword [ebp+16]
     push dword [ebp+12]
-    push dword [ebp+12]
+    push dword [ebp+8]
     call _print
     add esp,12
 
