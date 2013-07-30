@@ -12,9 +12,9 @@ _print:
 	push ebp
     mov  ebp, esp
 
-	push dword[ebp+12]
-    push dword[ebp+16]
-	push dword[ebp+8]
+    push dword [ebp+16]
+	push dword [ebp+12]
+	push dword [ebp+8]
 	push message
 	call printf
 
@@ -30,9 +30,9 @@ _hanoi:
 	cmp eax, 0x0
 
 	jle done
-    push dword [ebp+12]
     push dword [ebp+16]
     push dword [ebp+20]
+    push dword [ebp+12]
     dec eax
     push dword eax
     call _hanoi
@@ -40,14 +40,14 @@ _hanoi:
 
     push dword [ebp+16]
     push dword [ebp+12]
-    push dword [ebp+20]
+    push dword [ebp+12]
     call _print
     add esp,12
 
-    mov eax,[ebp+8]
-    push dword [ebp+16]
+    push dword [ebp+12]
     push dword [ebp+16]
     push dword [ebp+20]
+    mov eax,[ebp+8]
     dec eax
     push dword eax
     call _hanoi
