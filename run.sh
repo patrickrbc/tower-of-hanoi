@@ -1,3 +1,2 @@
-nasm -f elf hanoi.s
-ld -s -o hanoi hanoi.o
+nasm -f elf hanoi.s && gcc -m32 -o hanoi hanoi.o
 ./hanoi

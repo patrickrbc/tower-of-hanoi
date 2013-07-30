@@ -17,6 +17,6 @@ int main(void)
 {
 	int numDiscos;
 	scanf("%d", &numDiscos);
-	hanoi(numDiscos, 'A', 'B', 'C');
+	hanoi(numDiscos, '1', '2', '3');
 	return 0;
 }

@@ -1,138 +1,91 @@
 section .data
 	hello: db 'Hi, this is a Tower of Hanoi solution! Tell me how many disks you have.', 10
 	hellolen: equ $-hello
-
-	mova: db 10,'move disk', 32
-	de: db 32, 'from', 32
-	para: db 32, 'to', 32
-
-	diskA: db 65
-	diskB: db 66
-	diskC: db 67
+	message: db "move disk %d from %d to %d", 10, 0
 
 section .text
-    global _start
+	global main
 
+extern printf
 
 _print:
 	push ebp
     mov  ebp, esp
 
-;	print 'move disk'
-	mov eax, 4
-	mov ebx, 0
-	mov ecx, mova
-	mov edx, 10
-	int 80h
-
-;	print disk number
-	mov eax, 4
-	mov ebx, 0
-	mov ecx, [esp+16] ;  nDisk
-	mov edx, 1
-	int 80h
-
-;	print 'from'
-	mov eax, 4
-	mov ebx, 0
-	mov ecx, de
-	mov edx, 6
-	int 80h
-
-	mov eax, 4
-	mov ebx, 0
-	mov ecx, dword[esp+24] ;  A
-	mov edx, 1
-	int 80h
-
-;	print 'to'
-	mov eax, 4
-	mov ebx, 0
-	mov ecx, para
-	mov edx, 4
-	int 80h
-
-	mov eax, 4
-	mov ebx, 0
-	mov ecx, dword[esp+20] ;  B
-	mov edx, 1
-	int 80h
+	push dword[ebp+12]
+    push dword[ebp+16]
+	push dword[ebp+8]
+	push message
+	call printf
 
 	mov esp, ebp
 	pop ebp
 	ret
 
-
 _hanoi:
 	push ebp
-    mov  ebp, esp
+    mov ebp, esp
 
-;	compare with one
-	mov eax, [esp+8]
-	cmp eax, 49
+	mov eax, [ebp+8]
+	cmp eax, 0x0
 
-	je equal
-;	not equal
-    mov edx, [esp+8] ; N
-	dec edx
-    mov eax, [esp+12] ; A
-    mov ebx, [esp+16] ; B
-    mov ecx, [esp+20] ; C
-    push ebx ; B
-    push ecx ; C
-    push eax ; A
-    push edx ; n-1
+	jle done
+    push dword [ebp+12]
+    push dword [ebp+16]
+    push dword [ebp+20]
+    dec eax
+    push dword eax
     call _hanoi
+    add esp,12
 
+    push dword [ebp+16]
+    push dword [ebp+12]
+    push dword [ebp+20]
     call _print
-    jmp done
+    add esp,12
 
-    mov edx, [esp+8] ; N
-	dec edx
-    mov eax, [esp+12] ; A
-    mov ebx, [esp+16] ; B
-    mov ecx, [esp+20] ; C
-    push eax ; A
-    push ebx ; B
-    push ecx ; C
-    push edx ; n-1
+    mov eax,[ebp+8]
+    push dword [ebp+16]
+    push dword [ebp+16]
+    push dword [ebp+20]
+    dec eax
+    push dword eax
     call _hanoi
-
-	equal:
-	call _print
+    add esp,12
 
 	done:
 	mov esp, ebp
 	pop ebp
 	ret
 
-_start:
+main:
 	push ebp
     mov  ebp, esp
-;	welcome message
+
 	mov eax, 4
 	mov ebx, 0
 	mov ecx, hello
 	mov edx, hellolen
 	int 80h
 
-;	read input
 	mov eax, 3
 	mov ebx, 0
 	mov ecx, nDisk
 	mov edx, 1
 	int 80h
 
-	push diskA
-	push diskB
-	push diskC
-	push dword[nDisk]
+    push dword 0x3
+ 	push dword 0x2
+    push dword 0x1
+	mov eax, dword[nDisk]
+	sub eax, 30h
+	push eax
+
 	call _hanoi
 
-;	exit
 	mov eax, 1
     mov ebx, 0
     int 80h
 
 section .bss
-	nDisk resb 8
+	nDisk resb 1
