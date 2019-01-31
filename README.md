@@ -1,5 +1,6 @@
-<pre>
-nasm -f elf hanoi.s
-ld -s -o hanoi hanoi.o
-./hanoi
-</pre>
+Tower of Hanoi resolution program created for learning purposes.
+
+```
+make
+./build
+```
